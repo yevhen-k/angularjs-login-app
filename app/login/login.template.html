@@ -1,0 +1,23 @@
+<h3>Login Page</h3>
+      <!-- https://www.w3schools.com/angular/angular_validation.asp -->
+<form ng-submit="formSubmit()" name="formLogin" class="form" novalidate>
+  <div class="col-md-4">
+    <div class="form-group">
+      <input type="email" class="form-control" name="email" ng-model="email" placeholder="email" ng-required="true"/>
+      <div ng-show="formLogin.email.$touched && !isValidEmail()" style="color: red;">E-mail is incorrect</div>
+    </div> 
+
+    <div class="form-group">
+      <input type="password" class="form-control" name="password" ng-model="password" placeholder="password" ng-required="true"/>
+      <div ng-show="formLogin.password.$touched && !formLogin.password.$valid" style="color: red;">Password cannot be empty</div>
+    </div>
+
+    <div class="form-group">
+      <button type="submit" class="btn btn-success" ng-disabled="formLogin.$invalid">Login</button>
+      <a ui-sref="register" ui-sref-active="active" class="btn btn-primary">Register</a>
+      <span class="text-danger" style="display: block">{{ error }}</span>
+    </div>
+
+  </div>
+</form>
+

@@ -1,0 +1,26 @@
+[
+  {
+    "id": 0,
+    "name": "First",
+    "email": "first@example.com",
+    "password": "first",
+    "isBlocked": false,
+    "isCurrentlyActive": false
+  },
+  {
+    "id": 1,
+    "name": "Second",
+    "email": "second@example.com",
+    "password": "second",
+    "isBlocked": false,
+    "isCurrentlyActive": false
+  },
+  {
+    "id": 2,
+    "name": "Blocked",
+    "email": "blocked@example.com",
+    "password": "blocked",
+    "isBlocked": true,
+    "isCurrentlyActive": false
+  }
+]

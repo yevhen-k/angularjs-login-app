@@ -1,0 +1,22 @@
+<h3>Register:</h3>
+<form ng-submit="formRegisterSubmit()" name="formRegister" class="form" novalidate>
+  <div class="col-md-4">
+    <div class="form-group">
+      <input type="text" class="form-control" name='name' ng-model="userName" placeholder="User Name" ng-required="true">
+      <div ng-show="formRegister.name.$touched && formRegister.name.$invalid" style="color: red;">Invalid username</div>
+    </div>
+    <div class="form-group">
+      <input type="email" class="form-control" name="email" ng-model="email" placeholder="E-mail" ng-required="true">
+      <div ng-show="formRegister.email.$touched && !isValidEmail()" style="color: red;">E-mail is incorrect</div>
+    </div>
+    <div class="form-group">
+      <input type="password" class="form-control" name="password" ng-model="password" placeholder="Password" ng-required="true">
+    </div>
+    <div class="form-group">
+      <input type="password" class="form-control" name="passwordConfirm" ng-model="passwordConfirm" placeholder="Confirm Password" ng-required="true">
+    </div>
+    <div ng-show="formRegister.password.$touched && formRegister.passwordConfirm.$touched && !isPasswordsMatch()" style="color: red;">Password mismatch!</div>
+    <button type="submit" class="btn btn-primary" ng-disabled="formRegister.$invalid">Register</button>
+    <span class="text-danger">{{ error }}</span>
+  </div>
+</form>
