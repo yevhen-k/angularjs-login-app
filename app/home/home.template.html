@@ -1,11 +1,15 @@
 <h3>Home Page</h3>
       
 <div class="col-md-4">
-  <p>Name: {{name}}</p>
-  <p>ID: {{id}}</p>
+  <p>Name: {{HomeController.name}}</p>
+  <p>ID: {{HomeController.id}}</p>
   <a ui-sref="login" ui-sref-active="active" class="btn btn-warning" ng-click="logOut()">Logout</a>
 </div>
 
 <div class="col-md-4">
+  <my-events></my-events>
+</div>
+
+<div class="col-md-4" style="text-align:end">
   <img src="http://via.placeholder.com/150x150" alt="placeholder image">
 </div>

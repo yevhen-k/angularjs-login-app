@@ -17,19 +17,19 @@ loginApp
         .state('login', {
           url: '/',
           templateUrl: 'login/login.template.html',
-          controller: 'LoginController',
+          controller: 'LoginController as LoginController',
           authRequired: false
         }).state('register', {
           url: '/register',
           templateUrl: 'register/register.template.html',
-          controller: 'RegisterController',
+          controller: 'RegisterController as RegisterController',
           authRequired: false
         }).state('home', {
           url: '/home',
           templateUrl: 'home/home.template.html',
-          controller: 'HomeController',
+          controller: 'HomeController as HomeController',
           authRequired: true
-        });
+        })
 
       // $locationProvider.html5Mode(true);
       $locationProvider.hashPrefix = '!';

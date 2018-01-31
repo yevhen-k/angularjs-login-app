@@ -5,6 +5,7 @@
     "email": "first@example.com",
     "password": "first",
     "isBlocked": false,
+    "events": [],
     "isCurrentlyActive": false
   },
   {
@@ -13,6 +14,7 @@
     "email": "second@example.com",
     "password": "second",
     "isBlocked": false,
+    "events": [],
     "isCurrentlyActive": false
   },
   {
@@ -21,6 +23,7 @@
     "email": "blocked@example.com",
     "password": "blocked",
     "isBlocked": true,
+    "events": [],
     "isCurrentlyActive": false
   }
 ]

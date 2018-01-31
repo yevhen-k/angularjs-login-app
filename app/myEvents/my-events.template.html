@@ -1,0 +1,26 @@
+<div style="display: flex; justify-content: space-around;">
+  <h4>{{MyEventsController.header}}</h4>
+  <button class='btn btn-success' ng-click="MyEventsController.addEvent()">+</button>
+</div>
+
+<datepicker date-set="{{ MyEventsController.today | date : 'dd.MM.yyyy' }}" date-format="dd.MM.yyyy" selector="form-control">
+  <div class="input-group">
+    <input class="form-control"  placeholder="Choose a date"/>
+    <span class="input-group-addon" style="cursor: pointer">
+      <i class="fa fa-lg fa-calendar"></i>
+    </span>
+  </div>
+</datepicker>
+
+<ol class="event-list">
+  <li ng-repeat="event in MyEventsController.events">
+    <p>Event date: {{event.date}}</p>
+    <p>Event price: {{event.price}}</p>
+    <p>Participants:</p>
+    <ul class="participants-list">
+      <li ng-repeat="participant in event.participants">
+        <p>{{participant}}</p>
+      </li>
+    </ul>
+  </li>
+</ol>

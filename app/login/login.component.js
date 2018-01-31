@@ -12,13 +12,7 @@
     return re.test($scope.email);
   };
 
-  function getUsers() {
-    return $http.get('data/users.json').then(function(response) {
-      return response.data;
-    });
-  }
   
-
   $scope.formSubmit = function() {
     LoginService.fetchUsers()
     .then(
