@@ -43,8 +43,13 @@ loginApp
 // https://ui-router.github.io/guide/ng1/migrate-to-1_0#state-change-events
 // при перезагрузке страницы $rootscope обновляется, т.к. это эквивалентно перезапуску приложения
 // https://www.octobot.io/blog/2016-11-25-angularjs-ui-router-per-view-authorization/
-loginApp.run(function ($rootScope, $location, $state, localStorageService, RegisterService, LoginService) {
+// https://stackoverflow.com/questions/36084571/how-can-i-override-angulars-number-filter
+loginApp.run(function ($rootScope, $location, $state, $locale, localStorageService, RegisterService, LoginService) {
+  // найдем залогиненного пользователя
   LoginService.prefecthUsers();
+  // переопределим локаль по отображению чисел
+  $locale.NUMBER_FORMATS.GROUP_SEP = " ";
+  $locale.NUMBER_FORMATS.DECIMAL_SEP = ".";
   $rootScope.$on('$stateChangeStart', function (event, toState, toParams, fromState, fromParams) {
     // event.preventDefault();
     console.log('---------------------------------------');

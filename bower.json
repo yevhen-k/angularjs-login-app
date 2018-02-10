@@ -12,10 +12,11 @@
     "angular-resource": "1.5.x",
     "angular-route": "1.5.x",
     "bootstrap": "3.3.x",
-    "jquery": "2.2.x",
+    "jquery": "latest",
     "angular-ui-router": "^1.0.13",
     "angular-local-storage": "^0.7.1",
-    "angularjs-datepicker": "^2.1.23"
+    "angularjs-datepicker": "^2.1.23",
+    "angular-money-mask": "^1.0.4"
   },
   "devDependencies": {
     "angular-translate": "^2.17.0"

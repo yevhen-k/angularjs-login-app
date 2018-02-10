@@ -24,35 +24,7 @@ angular.module('register').factory('RegisterService', function($rootScope, local
         email: email,
         password: password,
         isBlocked: false,
-        events: [
-          {
-            date: '28.01.2015',
-            price: 25,
-            participants: [
-              'first',
-              'second',
-              'third'
-            ]
-          },
-          {
-            date: '12.10.2115',
-            price: 12,
-            participants: [
-              'first',
-              'second',
-              'third'
-            ]
-          },
-          {
-            date: '05.05.1015',
-            price: 10,
-            participants: [
-              'first',
-              'second',
-              'third'
-            ]
-          }
-        ],
+        events: [],
         isCurrentlyActive: true
       };
       localStorageService.set($rootScope.registeredUsers.length, newUser);

@@ -1,0 +1,38 @@
+<div class="modal-header">
+    <h3 class="modal-title" id="modal-title">Modal Window Example</h3>
+</div>
+
+
+<div class="modal-body" id="modal-body">
+    <p>Choose a date of event</p>
+    <datepicker date-set="{{ ModelHandlerController.today | date : 'dd.MM.yyyy' }}" date-format="dd.MM.yyyy" selector="form-control" style="padding-bottom: 15px;">
+        <div class="input-group">
+            <input class="form-control"  placeholder="Choose a date" ng-model="ModelHandlerController.selectedDate"/>
+            <span class="input-group-addon" style="cursor: pointer">
+                <i class="fa fa-lg fa-calendar"></i>
+            </span>
+        </div>
+    </datepicker>
+    <p>Input a price of event</p>
+    <input type="text" class="form-control" name="price" ng-model="ModelHandlerController.price" money-mask money-mask-prepend="UAH">
+    <p>Select participants:</p>
+    <div style="display: flex;">
+        <select class="form-control" ng-model="ModelHandlerController.selectedUser" ng-options="user.name for user in ModelHandlerController.users"></select>
+        <div style="width: 10px;"></div>
+        <button type="button" class="btn btn-success" ng-click="ModelHandlerController.add()">Add</button>
+    </div>
+    <p>Selected participants:</p>
+    <div ng-repeat="addedUser in ModelHandlerController.selectedUsers | orderBy" style="display: flex; padding: 5px 5px;">
+        <span class="form-control">{{addedUser}}</span>
+        <div style="width: 10px;"></div>
+        <button type="button" class="btn btn-danger" ng-click="ModelHandlerController.remove(addedUser)">Remove</button>
+    </div>
+    
+    
+    
+</div>
+<div style="clear: both; content: ''; display: block;"></div>
+<div class="modal-footer">
+    <button class="btn btn-primary" type="button" ng-click="ModelHandlerController.ok()" ng-disabled="ModelHandlerController.isInvalid()">Ok</button>
+    <button class="btn btn-warning" type="button" ng-click="ModelHandlerController.cancelModal()">Cancel</button>
+</div>

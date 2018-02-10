@@ -7,6 +7,7 @@ angular.module('loginApp', [
   'ui.router.state.events',
   '720kb.datepicker',
   'ui.bootstrap',
+  'rw.moneymask',
   'login',
   'register',
   'home',
