@@ -22,13 +22,34 @@ angular.module('register')
   $scope.formRegisterSubmit = function () {
     LoginService.fetchUsers()
       .then(function(){
-        if(RegisterService.register($scope.userName, $scope.email, $scope.password, $scope.passwordConfirm)) {
-          $scope.userName = '';
-          $scope.email = '';
-          $scope.password = '';
-          $scope.passwordConfirm = '';
-          $rootScope.toStateName = 'home';
-          $state.transitionTo('home');
+        if(!RegisterService.isUserAlreadyExists($scope.userName, $scope.email, $scope.password, $scope.passwordConfirm)) {
+          RegisterService.register($scope.userName, $scope.email, $scope.password, $scope.passwordConfirm)
+          .success(function (result) {
+            console.log('User successfully saved to backend');
+            var newUser = {
+              id: $rootScope.registeredUsers.length,
+              name: $scope.userName,
+              email: $scope.email,
+              password: $scope.password,
+              isBlocked: false,
+              events: [],
+              isCurrentlyActive: true
+            };    
+            localStorageService.set($rootScope.registeredUsers.length, newUser);
+            $rootScope.registeredUsers.push(newUser);
+            $rootScope.currentUser = newUser;
+            LoginService.login($rootScope.currentUser.email, $rootScope.currentUser.password);
+            $scope.userName = '';
+            $scope.email = '';
+            $scope.password = '';
+            $scope.passwordConfirm = '';
+            $rootScope.toStateName = 'home';
+            $state.transitionTo('home');
+          })
+          .error(function (result) {
+            console.log('Error in user post', result);
+            $scope.error = "Error in user registration process!";
+          });
         } else {
           $scope.error = "User is already exists!";
         }

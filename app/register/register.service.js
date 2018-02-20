@@ -3,21 +3,10 @@
 
 // https://www.youtube.com/watch?v=R_okHflzgm0 AngularJS Tutorial #18 - Custom Directives
 // https://www.youtube.com/watch?v=jHhtaJAdYv8 AngularJS Tutorial #23 - Form Validation (part 2)
-angular.module('register').factory('RegisterService', function($rootScope, localStorageService, LoginService){
+angular.module('register').factory('RegisterService', function($rootScope, $http, localStorageService, LoginService){
   var isRegisteredSuccessful = false;
   return {
     register: function(userName, email, password, passwordConfirm) {
-      if(password !== passwordConfirm) {
-        isRegisteredSuccessful = false;
-        return isRegisteredSuccessful;
-      }
-      for(var i = 0; i < $rootScope.registeredUsers.length; i++) {
-        if($rootScope.registeredUsers[i].email == email){
-          isRegisteredSuccessful = false;
-          return isRegisteredSuccessful;
-        }
-      }
-      isRegisteredSuccessful = true;
       var newUser = {
         id: $rootScope.registeredUsers.length,
         name: userName,
@@ -26,15 +15,21 @@ angular.module('register').factory('RegisterService', function($rootScope, local
         isBlocked: false,
         events: [],
         isCurrentlyActive: true
-      };
-      localStorageService.set($rootScope.registeredUsers.length, newUser);
-      $rootScope.registeredUsers.push(newUser);
-      $rootScope.currentUser = newUser;
-      LoginService.login($rootScope.currentUser.email, $rootScope.currentUser.password);
-      return isRegisteredSuccessful;
+      };      
+      return $http.post('http://localhost:3001/newuser', newUser);
     },
     isRegisteredSuccessful : function() {
       return isRegisteredSuccessful;
+    },
+    isUserAlreadyExists : function(userName, email, password, passwordConfirm) {
+      var isUserAlreadyExists = false;
+      for(var i = 0; i < $rootScope.registeredUsers.length; i++) {
+        if($rootScope.registeredUsers[i].email == email){
+          var isUserAlreadyExists = true;
+          return isUserAlreadyExists;
+        }
+      }
+      return isUserAlreadyExists;
     }
   }
 });

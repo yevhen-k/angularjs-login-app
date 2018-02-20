@@ -54,7 +54,7 @@ angular.module('login').factory('LoginService', function ($rootScope, localStora
       console.log('end prefetch');
     },
     fetchUsers: function () {
-      return $http.get('data/users.json').then(function (response) {
+      return $http.get('http://localhost:3001/data/users').then(function (response) { // /data/users.json
         // заполняем localStorageService зарегистрированными пользователями
         console.log('fetchUsers');
 
