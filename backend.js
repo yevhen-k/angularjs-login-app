@@ -82,12 +82,12 @@ db.once('open', function() {
     var userDetailsFromRequest = req.body;
     // recieved data from user
     console.log('/login userDetailsFromRequest', userDetailsFromRequest);
-    var hashedPass = passwordHash.generate(userDetailsFromRequest.password);
-    console.log('/login hashedPass', hashedPass);
-    User.find({email: userDetailsFromRequest.email, password: hashedPass}, function (err, user) {
+    var password = userDetailsFromRequest.password;
+    console.log('/login password', password);
+    User.find({email: userDetailsFromRequest.email}, function (err, user) {
       // if user not found then user is empty array
       if (err) return console.error(err);
-      if(user.length !== 0) {
+      if(user.length !== 0 && passwordHash.verify(password, user[0].password) && !user[0].isBlocked) {
         console.log('/login user is found', user);
         // create new cookie
         var cookieValue = makeCookieBetter();
@@ -95,8 +95,7 @@ db.once('open', function() {
         var cookie = cookieName + '=' + cookieValue;
         // add cookie to DB
         var query = {
-          email: userDetailsFromRequest.email,
-          password: hashedPass
+          email: userDetailsFromRequest.email
         };
         var updateCookie = {cookie: cookie};
         var option = {new: true};
@@ -106,7 +105,7 @@ db.once('open', function() {
         });
       } else {
         console.log('/login user is NOT found', user);
-        res.send(user);
+        res.send([]);
       }
     });
   });
