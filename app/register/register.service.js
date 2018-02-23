@@ -16,10 +16,7 @@ angular.module('register').factory('RegisterService', function($rootScope, $http
         events: [],
         isCurrentlyActive: true
       };      
-      return $http.post('http://localhost:3001/newuser', newUser);
-    },
-    isRegisteredSuccessful : function() {
-      return isRegisteredSuccessful;
+      return $http.post('http://localhost:3001/register', newUser);
     },
     isUserAlreadyExists : function(userName, email, password, passwordConfirm) {
       var isUserAlreadyExists = false;

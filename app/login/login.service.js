@@ -4,55 +4,11 @@
 // https://www.youtube.com/watch?v=wA0gZnBI8i4 $q
 // https://www.youtube.com/watch?v=s6SH72uAn3Q promises js
 angular.module('login').factory('LoginService', function ($rootScope, localStorageService, $http) {
-
-  /*
-  var users = [
-    {
-      id: 0,
-      name: 'First',
-      email: 'first@example.com',
-      password: 'first',
-      isBlocked: false,
-      isCurrentlyActive: false
-    },
-    {
-      id: 1,
-      name: 'Second',
-      email: 'second@example.com',
-      password: 'second',
-      isBlocked: false,
-      isCurrentlyActive: false
-    },
-    {
-      id: 2,
-      name: 'Blocked',
-      email: 'blocked@example.com',
-      password: 'blocked',
-      isBlocked: true,
-      isCurrentlyActive: false
-    }
-  ];
-  */
   // инициализируем текущего пользователя
-  var users = [];
+  var currentUser = {};
   $rootScope.currentUser = {};
-  var isAuthenticated = false;
 
   return {
-    prefecthUsers: function () {
-      // заполняем $rootScope зарегистрированными пользователями
-      $rootScope.registeredUsers = [];
-      console.log('prefetch');
-      console.log('$rootScope.registeredUsers:');
-      for (var i = 0; i < localStorageService.length(); i++) {
-        $rootScope.registeredUsers[i] = localStorageService.get(i);
-        console.log($rootScope.registeredUsers[i]);
-        if ($rootScope.registeredUsers[i].isCurrentlyActive) {
-          $rootScope.currentUser = $rootScope.registeredUsers[i];
-        }
-      }
-      console.log('end prefetch');
-    },
     fetchUsers: function () {
       return $http.get('http://localhost:3001/data/users').then(function (response) { // /data/users.json
         // заполняем localStorageService зарегистрированными пользователями
@@ -95,43 +51,44 @@ angular.module('login').factory('LoginService', function ($rootScope, localStora
       });
     },
     login: function (email, password) {
+      // отправить запрос на сервер методом POST
+      // и вернуть promise
       console.log('in LoginService.login');
-      console.log('$rootScope.registeredUsers.length: ' + $rootScope.registeredUsers.length);
-      console.log(email + " " + password);
-      console.log($rootScope.registeredUsers);
-      for (var i = 0; i < $rootScope.registeredUsers.length; i++) {
-        console.log($rootScope.registeredUsers[i]);
-        // проверка правильности введенных логина и пароля, а также проверка заблокирован ли пользователь
-        if ($rootScope.registeredUsers[i].email == email && $rootScope.registeredUsers[i].password == password && !$rootScope.registeredUsers[i].isBlocked) {
-          $rootScope.currentUser = $rootScope.registeredUsers[i];
-          $rootScope.currentUser.isCurrentlyActive = true;
-          localStorageService.set($rootScope.currentUser.id, $rootScope.currentUser);
-          console.log("$rootScope.currentUser");
-          console.log($rootScope.currentUser);
-          isAuthenticated = true;
-          return isAuthenticated;
-        }
-        // проверка, является ли пользователь уже залогиненым
-        if ($rootScope.registeredUsers[i].isCurrentlyActive) {
-          isAuthenticated = true;
-          return isAuthenticated;
-        }
-      }
-      return isAuthenticated;
+      var credentials = {};
+      credentials.email = email;
+      credentials.password = password;
+      return $http.post('http://localhost:3001/login', credentials);
+    },
+    logout: function() {
+      return $http.post('http://localhost:3001/logout', currentUser);
+    },
+    isAuthenticated: function() {
+      var cookie = 'SID' + '=' + localStorageService.get('SID');
+      var credentials = {
+        email: currentUser.email,
+        cookie: cookie
+      };
+      console.log('cookie in isAuthenticated()', cookie);
+      return $http.post('http://localhost:3001/validatesession', credentials);
+    },
+    initializeUser: function(id, name, email) {
+      currentUser.id = id;
+      currentUser.name = name;
+      currentUser.email = email;
+      console.log('current user', currentUser);
+    },
+    getName: function() {
+      return currentUser.name;
+    },
+    getEmail: function() {
+      return currentUser.email;
+    },
+    getId: function() {
+      return currentUser.id;
+    },
+    getCurrentUser: function() {
+      return currentUser;
     }
-    // ,
-    // isAuthenticated : function() {
-    //   for(var i = 0; i < $rootScope.registeredUsers.length; i++) {
-    //     // проверка, является ли пользователь уже залогиненым
-    //     // console.log('$rootScope.registeredUsers[i].isCurrentlyActive: ' + $rootScope.registeredUsers[i].isCurrentlyActive)
-    //     if ($rootScope.registeredUsers[i].isCurrentlyActive) {
-    //       $rootScope.currentUser = $rootScope.registeredUsers[i];
-    //       isAuthenticated = true;
-    //       return isAuthenticated;
-    //     }
-    //   }
-    //   return isAuthenticated;
-    // }
   };
 
 });

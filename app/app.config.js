@@ -46,7 +46,7 @@ loginApp
 // https://stackoverflow.com/questions/36084571/how-can-i-override-angulars-number-filter
 loginApp.run(function ($rootScope, $location, $state, $locale, localStorageService, RegisterService, LoginService) {
   // найдем залогиненного пользователя
-  LoginService.prefecthUsers();
+  // LoginService.prefecthUsers();
   // переопределим локаль по отображению чисел
   $locale.NUMBER_FORMATS.GROUP_SEP = " ";
   $locale.NUMBER_FORMATS.DECIMAL_SEP = ".";
@@ -59,29 +59,36 @@ loginApp.run(function ($rootScope, $location, $state, $locale, localStorageServi
     console.log(toState);
     console.log('auth required: ' + toState.authRequired);
     // console.log('LoginService.isAuthenticated(): ' + LoginService.isAuthenticated());
-    console.log('RegisterService.isRegisteredSuccessful(): ' + RegisterService.isRegisteredSuccessful())
-    console.log($rootScope.currentUser);
+    // LoginService.isAuthenticated().then(function(res){
+    //   console.log('response validation', res);
+    //   console.log('response validation is', res.data.cookiesValid);
+    // });
     console.log('---------------------------------------');
 
+    LoginService.isAuthenticated().then(function(response){
+      console.log('response.data.cookiesValid', response.data, response.data.id,
+      response.data.name,
+      response.data.email);
+      LoginService.initializeUser(
+        response.data.id,
+        response.data.name,
+        response.data.email
+      );
+      if (response.data.cookiesValid && toState.name != 'home') {
+        // выход из рекурсии
+        // if (toState.name == 'home') return;
+        console.log('jailing active user');
+        event.preventDefault();
+        $state.transitionTo('home');
+      } else if (toState.authRequired && !response.data.cookiesValid) {
+        // Remember toState and toStateParams.
+        // $rootScope.toStateName = toState.name;
+        // Abort transition
+        event.preventDefault();
+        // Redirect to login page
+        $state.transitionTo('login');
+      } 
+    });
     
-    if ($rootScope.currentUser.isCurrentlyActive && toState.name != 'home') {
-      // выход из рекурсии
-      // if (toState.name == 'home') return;
-      console.log('jailing active user');
-      event.preventDefault();
-      $state.transitionTo('home');
-    } else if (toState.authRequired && !$rootScope.currentUser.isCurrentlyActive) {
-      // Remember toState and toStateParams.
-      // $rootScope.toStateName = toState.name;
-      // Abort transition
-      event.preventDefault();
-      // Redirect to login page
-      $state.transitionTo('login');
-    } 
-    // else if (RegisterService.isRegisteredSuccessful() && fromState.name == 'register') {
-    //   console.log('here 3rd if');
-    //   event.preventDefault();
-    //   $state.transitionTo('home');
-    // }
   });
 });

@@ -3,11 +3,11 @@
 angular.module('home')
 .controller('HomeController', function($scope, $rootScope, $stateParams, $state, LoginService, localStorageService) {
   $rootScope.title = "AngularJS Home Page";
-  this.name = $rootScope.currentUser.name;
-  this.id = $rootScope.currentUser.id;
+  this.name =LoginService.getName();
+  this.id = LoginService.getId();
   
   $scope.logOut = function() {
-    $rootScope.currentUser.isCurrentlyActive = false;
-    localStorageService.set($rootScope.currentUser.id, $rootScope.currentUser);
+    localStorageService.set('SID', '');
+    LoginService.logout();
   };
 });

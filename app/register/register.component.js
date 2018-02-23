@@ -38,7 +38,6 @@ angular.module('register')
             localStorageService.set($rootScope.registeredUsers.length, newUser);
             $rootScope.registeredUsers.push(newUser);
             $rootScope.currentUser = newUser;
-            LoginService.login($rootScope.currentUser.email, $rootScope.currentUser.password);
             $scope.userName = '';
             $scope.email = '';
             $scope.password = '';
