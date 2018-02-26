@@ -6,15 +6,13 @@
 angular.module('register').factory('RegisterService', function($rootScope, $http, localStorageService, LoginService){
   var isRegisteredSuccessful = false;
   return {
-    register: function(userName, email, password, passwordConfirm) {
+    register: function(userName, email, password) {
       var newUser = {
-        id: $rootScope.registeredUsers.length,
         name: userName,
         email: email,
         password: password,
         isBlocked: false,
         events: [],
-        isCurrentlyActive: true
       };      
       return $http.post('http://localhost:3001/register', newUser);
     },

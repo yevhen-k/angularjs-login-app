@@ -44,13 +44,11 @@ db.once('open', function() {
   console.log('connected to db successfully!');
   // create schema
   var userScema = mongoose.Schema({
-    id: Number,
     name: String,
     email: String,
     password: String,
     isBlocked: Boolean,
     events: [],
-    isCurrentlyActive: Boolean,
     cookie: String
   });
   // compiling schema to model
@@ -66,16 +64,22 @@ db.once('open', function() {
     var userDetailsFromRequest = req.body;
     var hashedPass = passwordHash.generate(userDetailsFromRequest.password);
     var newUser = new User({ 
-      id: userDetailsFromRequest.id,
       name: userDetailsFromRequest.name,
       email: userDetailsFromRequest.email,
       password: hashedPass,
       isBlocked: userDetailsFromRequest.isBlocked,
       events: userDetailsFromRequest.events,
-      isCurrentlyActive: userDetailsFromRequest.isCurrentlyActive
     });
-    newUser.save(function (err, newUser) {
-      res.send(newUser);
+    User.find({email: userDetailsFromRequest.email}, function(err, user){
+      // if user is found then registration is rejected
+      if (err) return console.error(err);
+      if(user.length !== 0) { // user is in db
+        res.send([]);
+      } else {
+        newUser.save(function (err, newUser) {
+          res.send(newUser);
+        });
+      }
     });
   });
   app.post('/login', function(req, res){

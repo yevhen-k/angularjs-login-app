@@ -16,7 +16,7 @@
       <input type="password" class="form-control" name="passwordConfirm" ng-model="passwordConfirm" placeholder="Confirm Password" ng-required="true">
     </div>
     <div ng-show="formRegister.password.$touched && formRegister.passwordConfirm.$touched && !isPasswordsMatch()" style="color: red;">Password mismatch!</div>
-    <button type="submit" class="btn btn-primary" ng-disabled="formRegister.$invalid">Register</button>
+    <button type="submit" class="btn btn-primary" ng-disabled="formRegister.$invalid || !isPasswordsMatch()">Register</button>
     <span class="text-danger">{{ error }}</span>
   </div>
 </form>

@@ -9,47 +9,6 @@ angular.module('login').factory('LoginService', function ($rootScope, localStora
   $rootScope.currentUser = {};
 
   return {
-    fetchUsers: function () {
-      return $http.get('http://localhost:3001/data/users').then(function (response) { // /data/users.json
-        // заполняем localStorageService зарегистрированными пользователями
-        console.log('fetchUsers');
-
-        users = response.data;
-        console.log("response.data");
-        console.log(response.data);
-        console.log('localStorageService.isSupported' + " " + localStorageService.isSupported);
-        if (localStorageService.length() == 0) {
-          console.log('localStorage is empty');
-          for (var i = 0; i < users.length; i++) {
-            var key = users[i].id;
-            var val = users[i];
-            console.log(key);
-            console.log(val);
-            localStorageService.set(key, val);
-          }
-        } else {
-          for (var i = 0; i < users.length; i++) {
-            var key = users[i].id;
-            var val = users[i];
-            if (localStorageService.get(key).email == val.email && localStorageService.get(key).password == val.password) {
-              continue;
-            }
-            localStorageService.set(key, val);
-          }
-        }
-        // заполним $rootScope.registeredUsers из localStorageService
-        for (var i = 0; i < localStorageService.length(); i++) {
-          $rootScope.registeredUsers[i] = localStorageService.get(i);
-          console.log($rootScope.registeredUsers[i]);
-          if ($rootScope.registeredUsers[i].isCurrentlyActive) {
-            $rootScope.currentUser = $rootScope.registeredUsers[i];
-          }
-        }
-        console.log('end fetchUsers');
-
-        return response.data;
-      });
-    },
     login: function (email, password) {
       // отправить запрос на сервер методом POST
       // и вернуть promise
